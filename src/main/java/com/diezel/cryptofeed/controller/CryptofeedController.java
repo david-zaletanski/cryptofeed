@@ -14,4 +14,5 @@ public class CryptofeedController {
 
     private static final Logger log = LoggerFactory.getLogger(CryptofeedController.class);
 
+
 }
