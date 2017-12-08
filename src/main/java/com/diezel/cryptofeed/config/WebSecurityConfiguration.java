@@ -33,5 +33,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         // Disable Cross Site Request Forgery (CSRF) - Usually disabled if API only.
         http.csrf().disable();
 
+        // TODO: Configure type of security, what endpoints to secure, etc.
     }
 }

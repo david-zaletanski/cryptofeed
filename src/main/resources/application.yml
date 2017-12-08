@@ -41,8 +41,10 @@ spring:
 
 # Logging
 logging:
+  # Change Output Format
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"
+  # Set Varying Log Levels Depending on Namespace
   level:
     com.diezel: ALL
     org.springframework.web: DEBUG
@@ -53,7 +55,7 @@ logging:
 # Security
 management:
   security:
-    enabled: false
+    enabled: false      # Disable to access actuator endpoints without requiring authentication.
 
 # Application Endpoint
 server:
@@ -71,3 +73,7 @@ spring:
     properties:
       hibernate:
         ddl-auto: validate    # Validate schema, do not make changes.
+
+  management:
+    security:
+      enabled: true
