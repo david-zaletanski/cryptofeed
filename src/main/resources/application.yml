@@ -1,0 +1,73 @@
+# Diezel Cryptofeed
+
+# Local Spring Boot Configuration
+spring:
+  profiles:
+    active: local   # For local machine execution configuration.
+
+  # Application Information
+  application:
+    name: Diezel Cryptofeed
+
+  # Database
+  #datasource:
+    #driver-class-name: oracle.jdbc.driver.OracleDriver
+    #url: X              # Connection String
+    #username: X         # Database Application account with full permissions
+    #password: X
+
+  jpa:
+    show-sql: true       # Logs SQL as its executed by JPA. Set org.hibernate logging level to INFO.
+    properties:
+      hibernate:
+        ddl-auto: create-drop  # Automatically DB on start (options: validate | update | create | create-drop ) validate makes no changes to db.
+        #format_sql: true      # Makes SQL easier to read with show-sql enabled
+
+# Flyway Database Migration Scripting
+#flyway:
+  #enabled: false      # Disable to avoid schema validation and/or auto-update every execution
+  #url: X              # Database connection String
+  #user: X             # Database user account with full permissions
+  #password: X
+  #placeholders:
+    #db_schema: X
+    #app_schema: X
+    #data_tablespace: X
+
+# Proxy
+#proxy:
+  #host: X
+  #port: X
+
+# Logging
+logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n"
+  level:
+    com.diezel: ALL
+    org.springframework.web: DEBUG
+    org.hibernate: INFO
+    com.netflix: DEBUG
+  #file: "C:\diezel\cryptofeedlogs\diezel.log"    # Log to disk
+
+# Security
+management:
+  security:
+    enabled: false
+
+# Application Endpoint
+server:
+  port: 8090
+
+---
+
+# Cloud Profile Configuration
+
+# Cloud
+spring:
+  profiles: production   # Overwrite some local config values when hosted live in production environment.
+
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: validate    # Validate schema, do not make changes.
