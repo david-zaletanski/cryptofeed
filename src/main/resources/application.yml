@@ -61,6 +61,12 @@ management:
 server:
   port: 8090
 
+# ---- Application-Properties Below ----
+cryptofeed:
+  security:
+    enabled: true
+    jwtSigningKey: "TEST123ABC123"
+
 ---
 
 # Cloud Profile Configuration
