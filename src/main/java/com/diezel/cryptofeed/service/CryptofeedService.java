@@ -1,5 +1,6 @@
 package com.diezel.cryptofeed.service;
 
+import com.diezel.cryptofeed.model.CryptofeedUser;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,6 +19,11 @@ public class CryptofeedService {
      */
     public String hello(String world) {
         return "Hello " + (world == null || world.isEmpty() ? "world!" : world);
+    }
+
+    public boolean addUser(CryptofeedUser user) {
+
+        return true;
     }
 
 }

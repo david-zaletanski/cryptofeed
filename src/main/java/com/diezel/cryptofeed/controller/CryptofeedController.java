@@ -1,5 +1,6 @@
 package com.diezel.cryptofeed.controller;
 
+import com.diezel.cryptofeed.model.CryptofeedUser;
 import com.diezel.cryptofeed.service.CryptofeedService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,12 @@ public class CryptofeedController {
     public ResponseEntity<String> hello(@PathVariable(name = "world", required = false) String world) {
         String response = cryptofeedService.hello(world);
         return new ResponseEntity<String>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.POST)
+    public ResponseEntity<Boolean> addUser(CryptofeedUser user) {
+        boolean success = cryptofeedService.addUser(user);
+        return new ResponseEntity<Boolean>(success, HttpStatus.OK);
     }
 
 }

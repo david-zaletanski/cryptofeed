@@ -21,7 +21,7 @@ import java.util.List;
 @Builder    // Generates a CryptofeedUserBuilder class and methods alongside
 @RequiredArgsConstructor(staticName = "of")   // Generates a static method constructor
 @AllArgsConstructor // Generate full constructor
-public class CryptofeedUser {
+public class CryptofeedUser extends DiezelModel {
 
     @NotBlank(message = "Username must not be blank.")
     // Checks String is not null and length > 0, or request fails validation

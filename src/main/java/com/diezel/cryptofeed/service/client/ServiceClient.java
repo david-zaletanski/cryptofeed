@@ -165,7 +165,7 @@ public class ServiceClient {
     }
 
     /**
-     * Creates HttpHeaders for making a Gateway service call, including a JWT authentication token.
+     * Creates HttpHeaders for making a service call, including a JWT authentication token.
      *
      * @param jwtAuthenticationToken a valid JWT authentication token allowing the service to be called
      * @return an HttpHeaders object to include in the request
