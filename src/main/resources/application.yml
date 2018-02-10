@@ -66,6 +66,12 @@ cryptofeed:
   security:
     enabled: true
     jwtSigningKey: "TEST123ABC123"
+  vendor:
+    kraken:
+      baseUrl: "https://api.kraken.com"
+      apiVersion: "0"
+      apiKey: "XYZ"
+      apiSecretKey: "XYZ"
 
 ---
 
