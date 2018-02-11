@@ -32,7 +32,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final int PASSWORD_ENCODER_STRENGTH = 10;
 
-    @Value( "cryptofeed.security.enabled" )
+    @Value( "${cryptofeed.security.enabled:false}" )
     private boolean enabled;
 
     @Autowired

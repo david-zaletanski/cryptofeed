@@ -20,13 +20,13 @@ import java.util.Collection;
 @Component
 public class CryptofeedUserDetailsService implements UserDetailsService {
 
-    @Value( "cryptofeed.security.admin.enableAdminUser" )
+    @Value( "${cryptofeed.security.admin.enableAdminUser:true}" )
     private boolean enableAdminUser;
 
-    @Value( "cryptofeed.security.admin.adminUsername" )
+    @Value( "${cryptofeed.security.admin.adminUsername:cryptofeed}" )
     private String adminUsername;
 
-    @Value( "cryptofeed.security.admin.adminPassword" )
+    @Value( "${cryptofeed.security.admin.adminPassword:admin}" )
     private String adminPassword;
 
     @Autowired

@@ -18,7 +18,7 @@ public class PushbulletClient {
     private static final Logger log = LoggerFactory.getLogger(PushbulletClient.class);
 
     // User Values
-    @Value("cryptofeed.vendor.pushbullet.baseUrl")  // https://api.kraken.com
+    @Value( "${cryptofeed.vendor.pushbullet.baseUrl}" )  // https://api.pushbullet.com
     private String baseUrl;
 
     // Class Variables
