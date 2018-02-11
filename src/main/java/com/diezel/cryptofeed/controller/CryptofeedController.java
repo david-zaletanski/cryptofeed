@@ -29,18 +29,6 @@ public class CryptofeedController {
     @Autowired
     CryptofeedService cryptofeedService;
 
-    /**
-     * Returns a friendly greeting.
-     *
-     * @param world optionally specify who to say hello to, the world by default
-     * @return a friendly hello world String
-     */
-    @RequestMapping(value = "/hello/{world}", method = RequestMethod.GET)
-    public ResponseEntity<String> hello(@PathVariable(name = "world", required = false) String world) {
-        String response = cryptofeedService.hello(world);
-        return new ResponseEntity<String>(response, HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/users", method = RequestMethod.POST)
     public ResponseEntity<Boolean> addUser(@RequestBody CryptofeedUser user) throws CryptofeedException {
         boolean success = cryptofeedService.addUser(user);

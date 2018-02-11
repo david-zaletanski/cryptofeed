@@ -85,12 +85,19 @@ cryptofeed:
   security:
     enabled: false
     jwtSigningKey: "TEST123ABC123"
+    admin:
+      enableAdminUser: true
+      adminUsername: "cryptofeed"
+      adminPassword: "admin"
   vendor:
     kraken:
       baseUrl: "https://api.kraken.com"
       apiVersion: "0"
       apiKey: "XYZ"
       apiSecretKey: "XYZ"
+    pushbullet:
+      baseUrl: ""
+
 
 ---
 

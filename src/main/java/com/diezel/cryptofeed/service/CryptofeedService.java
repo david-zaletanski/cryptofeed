@@ -4,6 +4,8 @@ import com.diezel.cryptofeed.model.CryptofeedUser;
 import com.diezel.cryptofeed.repository.CryptofeedUserRepository;
 import com.diezel.cryptofeed.repository.model.CryptofeedUserEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ import java.util.List;
  */
 @Service
 public class CryptofeedService {
+    private static final Logger log = LoggerFactory.getLogger(CryptofeedService.class);
 
     @Autowired
     CryptofeedUserRepository userRepository;
@@ -27,16 +30,6 @@ public class CryptofeedService {
 
     @Autowired
     ObjectMapper objectMapper;
-
-    /**
-     * Returns a hello world message.
-     *
-     * @param world who to say hello to. if null or empty, its the world
-     * @return a hello world message
-     */
-    public String hello(String world) {
-        return "Hello " + (world == null || world.isEmpty() ? "world!" : world);
-    }
 
     public boolean addUser(CryptofeedUser user) {
 
