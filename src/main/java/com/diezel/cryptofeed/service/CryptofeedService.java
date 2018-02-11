@@ -8,6 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * The service supporting the main Spring Controller.
  *
@@ -46,6 +49,14 @@ public class CryptofeedService {
         userRepository.save(userEntity);
 
         return userEntity.getId() != null;
+    }
+
+    public List<CryptofeedUser> getUsers() {
+        List<CryptofeedUser> users = new ArrayList<>();
+        for (CryptofeedUserEntity user : userRepository.findAll()) {
+            users.add(objectMapper.convertValue(user, CryptofeedUser.class));
+        }
+        return users;
     }
 
     public CryptofeedUser getUserByUsername(String username) {

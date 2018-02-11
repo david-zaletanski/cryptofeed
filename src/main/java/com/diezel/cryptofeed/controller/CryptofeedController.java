@@ -11,10 +11,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * The main Spring Controller for this application.
@@ -43,18 +42,25 @@ public class CryptofeedController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity<Boolean> addUser(CryptofeedUser user) throws CryptofeedException {
+    public ResponseEntity<Boolean> addUser(@RequestBody CryptofeedUser user) throws CryptofeedException {
         boolean success = cryptofeedService.addUser(user);
         if (!success)
             throw new CryptofeedException("Unabled to add user '"+user.getUsername()+"'.");
         return new ResponseEntity<Boolean>(success, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/users", method = RequestMethod.GET)
+    public ResponseEntity<List<CryptofeedUser>> getUsers() throws CryptofeedException {
+        List<CryptofeedUser> users = cryptofeedService.getUsers();
+
+        return new ResponseEntity<List<CryptofeedUser>>(users, HttpStatus.OK);
+    }
+
     @JsonView( value = { CryptofeedViews.IncludeInResponse.class } )
     @RequestMapping(value = "/users/{userId}",
             method = RequestMethod.GET,
             produces = { "application/json" } )
-    public ResponseEntity<CryptofeedUser> getUser(Long userId) throws CryptofeedException {
+    public ResponseEntity<CryptofeedUser> getUser(@RequestParam Long userId) throws CryptofeedException {
         CryptofeedUser user = cryptofeedService.getUser(userId);
         if (user == null)
             throw new CryptofeedDataException("Unable to find user with userId '"+userId+"'.");
