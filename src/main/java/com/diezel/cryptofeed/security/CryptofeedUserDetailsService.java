@@ -43,7 +43,7 @@ public class CryptofeedUserDetailsService implements UserDetailsService {
         // Check database for user information.
         CryptofeedUserEntity foundUserEntity = cryptofeedUserRepository.findOneByUsername(s);
         if (foundUserEntity == null)
-            return null;
+            throw new UsernameNotFoundException(s);
 
         return getUserDetailsFromCryptofeedUserEntity(foundUserEntity);
     }

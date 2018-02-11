@@ -74,7 +74,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         // Create jwt token string
         CryptofeedUserToken userToken = new CryptofeedUserToken(username, roles);
         String jwtToken = userToken.toJWT();
-        
+
         // Attach newly issued jwt token to response header and body
         res.addHeader(CryptofeedSecurityConstants.HTTP_AUTH_HEADER,
                 CryptofeedSecurityConstants.HTTP_AUTH_HEADER_JWT_PREFIX + jwtToken);

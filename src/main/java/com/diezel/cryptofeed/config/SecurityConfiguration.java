@@ -1,10 +1,13 @@
 package com.diezel.cryptofeed.config;
 
+import com.diezel.cryptofeed.security.filter.AuthenticationFilter;
+import com.diezel.cryptofeed.security.filter.AuthorizationFilter;
 import com.diezel.cryptofeed.service.CryptofeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -53,23 +56,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         // Disable Cross Site Request Forgery (CSRF) - Usually disabled if API only.
         http.csrf().disable();
 
-        http.sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .httpBasic()
-                .realmName("CF_SEC_REALM")
-                .and()
-                .csrf()
-                .disable();
-
         if (enabled) {
             // THe Basics of Overall Security Implementation:
             // https://auth0.com/blog/implementing-jwt-authentication-on-spring-boot/
 
-            // TODO: Add authentication filters.
+            http.cors().and().csrf().disable().authorizeRequests()
+                    .antMatchers(HttpMethod.POST, "/login").permitAll() // Open login endpoint to get tokens
+                    .anyRequest().authenticated()                                   // Otherwise a tokens required.
+                    .and()
+                    .addFilter(new AuthenticationFilter(authenticationManager()))   // Filters check requests for tokens
+                    .addFilter(new AuthorizationFilter(authenticationManager()))    // or login attempts.
+                    .sessionManagement()
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         } else {
-            http.authorizeRequests().anyRequest().permitAll();
+            http.authorizeRequests()
+                    .anyRequest().permitAll();
         }
     }
 
