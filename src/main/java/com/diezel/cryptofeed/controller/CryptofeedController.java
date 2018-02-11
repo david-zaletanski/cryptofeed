@@ -3,7 +3,9 @@ package com.diezel.cryptofeed.controller;
 import com.diezel.cryptofeed.exceptions.CryptofeedDataException;
 import com.diezel.cryptofeed.exceptions.CryptofeedException;
 import com.diezel.cryptofeed.model.CryptofeedUser;
+import com.diezel.cryptofeed.model.CryptofeedViews;
 import com.diezel.cryptofeed.service.CryptofeedService;
+import com.fasterxml.jackson.annotation.JsonView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,24 +49,26 @@ public class CryptofeedController {
         return new ResponseEntity<Boolean>(success, HttpStatus.OK);
     }
 
+    @JsonView( value = { CryptofeedViews.IncludeInResponse.class } )
     @RequestMapping(value = "/users/{userId}",
             method = RequestMethod.GET,
             produces = { "application/json" } )
     public ResponseEntity<CryptofeedUser> getUser(Long userId) throws CryptofeedException {
         CryptofeedUser user = cryptofeedService.getUser(userId);
         if (user == null)
-            throw new CryptofeedDataException("User with userId '"+userId+"' not found.");
+            throw new CryptofeedDataException("Unable to find user with userId '"+userId+"'.");
         return new ResponseEntity<CryptofeedUser>(user, HttpStatus.OK);
     }
 
+    @JsonView( value = { CryptofeedViews.IncludeInResponse.class } )
     @RequestMapping(
             value = "/users?username=",
             method = RequestMethod.GET,
             produces = { "application/json" } )
-    public ResponseEntity<CryptofeedUser> getUser(String username) throws CryptofeedException {
+    public ResponseEntity<CryptofeedUser> getUserByUsername(String username) throws CryptofeedException {
         CryptofeedUser user = cryptofeedService.getUserByUsername(username);
         if (user == null)
-            throw new CryptofeedDataException("User with username '"+username+"' not found.");
+            throw new CryptofeedDataException("Unable to find user with username '"+username+"'.");
         return new ResponseEntity<CryptofeedUser>(user, HttpStatus.OK);
     }
 

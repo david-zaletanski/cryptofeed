@@ -5,6 +5,7 @@ import com.diezel.cryptofeed.repository.CryptofeedUserRepository;
 import com.diezel.cryptofeed.repository.model.CryptofeedUserEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,6 +18,9 @@ public class CryptofeedService {
 
     @Autowired
     CryptofeedUserRepository userRepository;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -32,6 +36,11 @@ public class CryptofeedService {
     }
 
     public boolean addUser(CryptofeedUser user) {
+
+        // Hash User's Password for DB Insertion
+        String userPassword = user.getPassword();
+        String hashedUserPassword = passwordEncoder.encode(userPassword);
+        user.setPassword(hashedUserPassword);
 
         CryptofeedUserEntity userEntity = objectMapper.convertValue(user, CryptofeedUserEntity.class);
         userRepository.save(userEntity);
