@@ -1,8 +1,8 @@
 package com.diezel.cryptofeed.service;
 
 import com.diezel.cryptofeed.model.CryptofeedUser;
-import com.diezel.cryptofeed.repository.CryptofeedUserRepository;
-import com.diezel.cryptofeed.repository.model.CryptofeedUserEntity;
+import com.diezel.cryptofeed.model.entity.CryptofeedUserEntity;
+import com.diezel.cryptofeed.model.repository.CryptofeedUserRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -37,6 +38,11 @@ public class CryptofeedService {
         String userPassword = user.getPassword();
         String hashedUserPassword = passwordEncoder.encode(userPassword);
         user.setPassword(hashedUserPassword);
+
+        // Fill in other information
+        Date created = new Date();
+        user.setCreationDate(created);
+        user.setLastLoginDate(created);
 
         CryptofeedUserEntity userEntity = objectMapper.convertValue(user, CryptofeedUserEntity.class);
         userRepository.save(userEntity);

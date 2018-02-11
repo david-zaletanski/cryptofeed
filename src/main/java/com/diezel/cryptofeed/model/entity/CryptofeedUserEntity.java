@@ -1,4 +1,4 @@
-package com.diezel.cryptofeed.repository.model;
+package com.diezel.cryptofeed.model.entity;
 
 import lombok.Data;
 
@@ -7,38 +7,39 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * JPA domain model for CryptofeedUser.
+ * Hibernate / JPA model for the CryptofeedUser object.
  *
  * @author dzale
  */
 @Data
 @Entity      // Defines it as a JPA DB object.
-@Table( name = "CF_USER" )       // Specifies To Create a Table (optionally specify name or let it generate for you)
+@Table( name = "CF_USR" )       // Specifies To Create a Table (optionally specify name or let it generate for you)
 public class CryptofeedUserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
+    @Column( name = "CF_USR_ID" )
     private Long id;            // Domain has id primary key, model doesn't. Confuses ModelMapper sometimes.
 
-    @Column( name = "username" )
+    @Column( name = "CF_USR_NAME" )
     private String username;
 
-    @Column( name = "passwordHash" )
+    @Column( name = "CF_USR_PASS_HASH" )
     private String password;
 
     @ElementCollection
     @CollectionTable(
-            name = "CF_USER_AUTHORITIES",
-            joinColumns = @JoinColumn( name = "id", referencedColumnName = "id" )
+            name = "CF_USR_AUTH",
+            joinColumns = @JoinColumn( name = "CF_USER" )
+            //joinColumns = @JoinColumn( name = "CF_USER", referencedColumnName = "CF_USR_ID" )
     )
-    @Column( name = "authorities" )
+    @Column( name = "CF_USR_AUTHORITY" )
     private List<String> authorities;
 
-    @Column( name = "creationDate" )
+    @Column( name = "CF_USR_CREATE_DT" )
     private Date creationDate;
 
-    @Column( name = "lastLoginDate" )
+    @Column( name = "CF_USR_LAST_LOGIN_DT" )
     private Date lastLoginDate;
 
     /**

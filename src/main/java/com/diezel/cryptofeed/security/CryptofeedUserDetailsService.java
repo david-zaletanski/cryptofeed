@@ -1,7 +1,7 @@
 package com.diezel.cryptofeed.security;
 
-import com.diezel.cryptofeed.repository.CryptofeedUserRepository;
-import com.diezel.cryptofeed.repository.model.CryptofeedUserEntity;
+import com.diezel.cryptofeed.model.entity.CryptofeedUserEntity;
+import com.diezel.cryptofeed.model.repository.CryptofeedUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;

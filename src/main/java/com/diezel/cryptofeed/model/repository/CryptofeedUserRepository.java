@@ -1,7 +1,6 @@
-package com.diezel.cryptofeed.repository;
+package com.diezel.cryptofeed.model.repository;
 
-import com.diezel.cryptofeed.model.CryptofeedUser;
-import com.diezel.cryptofeed.repository.model.CryptofeedUserEntity;
+import com.diezel.cryptofeed.model.entity.CryptofeedUserEntity;
 import org.springframework.data.repository.CrudRepository;
 
 /**

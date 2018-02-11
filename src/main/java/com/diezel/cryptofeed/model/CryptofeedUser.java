@@ -2,7 +2,6 @@ package com.diezel.cryptofeed.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +9,6 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
-import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -26,7 +24,7 @@ import java.util.List;
 @Builder    // Generates a CryptofeedUserBuilder class and methods alongside
 @RequiredArgsConstructor(staticName = "of")   // Generates a static method constructor
 @AllArgsConstructor // Generate full constructor
-public class CryptofeedUser extends DiezelModel {
+public class CryptofeedUser {
 
     @JsonView( value = { CryptofeedViews.IncludeInResponse.class } )
     @NotBlank(message = "Username must not be blank.")
