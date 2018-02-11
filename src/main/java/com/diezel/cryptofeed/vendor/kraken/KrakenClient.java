@@ -48,6 +48,7 @@ public class KrakenClient {
     ObjectMapper objectMapper;
 
     public long getServerUnixTime() {
+        
         // Make Request
         String endpoint = getFullEndpointName(KrakenEndpointNames.SERVER_UNIXTIME);
         ResponseEntity<String> response =
