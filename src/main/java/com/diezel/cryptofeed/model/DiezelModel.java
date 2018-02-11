@@ -58,4 +58,8 @@ public abstract class DiezelModel {
             children.forEach(child -> child.setParent(parent));
     }
 
+    public boolean isEntity() {
+        return this.id == null ? false : true;
+    }
+
 }

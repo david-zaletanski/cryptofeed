@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.Mac;
@@ -27,6 +28,7 @@ import java.util.Base64;
  *
  * @author dzale
  */
+@Component
 public class KrakenClient {
 
     private static final Logger log = LoggerFactory.getLogger(KrakenClient.class);
@@ -38,7 +40,7 @@ public class KrakenClient {
     @Value("cryptofeed.vendor.kraken.apiVersion")
     private String apiVersion;
 
-    @Autowired
+    // Class Variables
     private RestTemplate restTemplate;
 
     @Autowired
@@ -47,8 +49,12 @@ public class KrakenClient {
     @Autowired
     ObjectMapper objectMapper;
 
+    public KrakenClient() {
+        restTemplate = new RestTemplate();
+    }
+
     public long getServerUnixTime() {
-        
+
         // Make Request
         String endpoint = getFullEndpointName(KrakenEndpointNames.SERVER_UNIXTIME);
         ResponseEntity<String> response =

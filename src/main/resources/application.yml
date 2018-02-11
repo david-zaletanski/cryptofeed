@@ -10,11 +10,15 @@ spring:
     name: Diezel Cryptofeed
 
   # Database
-  #datasource:
-    #driver-class-name: oracle.jdbc.driver.OracleDriver
-    #url: X              # Connection String
-    #username: X         # Database Application account with full permissions
-    #password: X
+  datasource:
+    url: jdbc:mysql://localhost/test              # Connection String
+    username: dbuser                              # Database Application account with full permissions
+    password: dbpass
+    driver-class-name: com.mysql.jdbc.Driver
+  h2:
+    console:
+      enabled: true
+      path: "/h2"
 
   jpa:
     show-sql: true       # Logs SQL as its executed by JPA. Set org.hibernate logging level to INFO.
@@ -59,12 +63,12 @@ management:
 
 # Application Endpoint
 server:
-  port: 8090
+  port: 4150
 
 # ---- Application-Properties Below ----
 cryptofeed:
   security:
-    enabled: true
+    enabled: false
     jwtSigningKey: "TEST123ABC123"
   vendor:
     kraken:

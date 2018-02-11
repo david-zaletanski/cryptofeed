@@ -1,4 +1,4 @@
-package com.diezel.cryptofeed.model.domain;
+package com.diezel.cryptofeed.repository.model;
 
 import lombok.Data;
 
@@ -13,7 +13,7 @@ import java.util.List;
  */
 @Data
 @Entity      // Defines it as a JPA DB object.
-@Table       // Specifies To Create a Table (optionally specify name or let it generate for you)
+@Table( name = "CF_USER" )       // Specifies To Create a Table (optionally specify name or let it generate for you)
 public class CryptofeedUserEntity {
 
     @Id
@@ -21,19 +21,24 @@ public class CryptofeedUserEntity {
     @Column
     private Long id;            // Domain has id primary key, model doesn't. Confuses ModelMapper sometimes.
 
-    @Column
+    @Column( name = "username" )
     private String username;
 
-    @Column
+    @Column( name = "passwordHash" )
     private String password;
 
-    @Column
+    @ElementCollection
+    @CollectionTable(
+            name = "CF_USER_AUTHORITIES",
+            joinColumns = @JoinColumn( name = "id", referencedColumnName = "id" )
+    )
+    @Column( name = "authorities" )
     private List<String> authorities;
 
-    @Column
+    @Column( name = "creationDate" )
     private Date creationDate;
 
-    @Column
+    @Column( name = "lastLoginDate" )
     private Date lastLoginDate;
 
     /**
