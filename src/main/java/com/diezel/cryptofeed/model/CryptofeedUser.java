@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -17,6 +18,7 @@ import java.util.List;
  *
  * @author dzale
  */
+
 @Data       // Generates getters, setters, constructor for required fields?
 @Builder    // Generates a CryptofeedUserBuilder class and methods alongside
 @RequiredArgsConstructor(staticName = "of")   // Generates a static method constructor
@@ -42,5 +44,11 @@ public class CryptofeedUser extends DiezelModel {
     @NotNull
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm z")
     private Date lastLoginDate;
+
+    // TODO: Find a better way to extend for vendor attributes
+
+    private String krakenPublicApiKey;
+
+    private String krakenPrivateKey;
 
 }

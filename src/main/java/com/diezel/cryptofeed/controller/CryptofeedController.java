@@ -1,5 +1,7 @@
 package com.diezel.cryptofeed.controller;
 
+import com.diezel.cryptofeed.exceptions.CryptofeedDataException;
+import com.diezel.cryptofeed.exceptions.CryptofeedException;
 import com.diezel.cryptofeed.model.CryptofeedUser;
 import com.diezel.cryptofeed.service.CryptofeedService;
 import org.slf4j.Logger;
@@ -38,9 +40,32 @@ public class CryptofeedController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.POST)
-    public ResponseEntity<Boolean> addUser(CryptofeedUser user) {
+    public ResponseEntity<Boolean> addUser(CryptofeedUser user) throws CryptofeedException {
         boolean success = cryptofeedService.addUser(user);
+        if (!success)
+            throw new CryptofeedException("Unabled to add user '"+user.getUsername()+"'.");
         return new ResponseEntity<Boolean>(success, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/users/{userId}",
+            method = RequestMethod.GET,
+            produces = { "application/json" } )
+    public ResponseEntity<CryptofeedUser> getUser(Long userId) throws CryptofeedException {
+        CryptofeedUser user = cryptofeedService.getUser(userId);
+        if (user == null)
+            throw new CryptofeedDataException("User with userId '"+userId+"' not found.");
+        return new ResponseEntity<CryptofeedUser>(user, HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "/users?username=",
+            method = RequestMethod.GET,
+            produces = { "application/json" } )
+    public ResponseEntity<CryptofeedUser> getUser(String username) throws CryptofeedException {
+        CryptofeedUser user = cryptofeedService.getUserByUsername(username);
+        if (user == null)
+            throw new CryptofeedDataException("User with username '"+username+"' not found.");
+        return new ResponseEntity<CryptofeedUser>(user, HttpStatus.OK);
     }
 
 }

@@ -5,22 +5,37 @@ spring:
   profiles:
     active: local   # For local machine execution configuration.
 
+  # Security
+  security:
+    basic:
+      enabled: false
+
   # Application Information
   application:
     name: Diezel Cryptofeed
 
   # Database
   datasource:
-    url: jdbc:mysql://localhost/test              # Connection String
-    username: dbuser                              # Database Application account with full permissions
-    password: dbpass
-    driver-class-name: com.mysql.jdbc.Driver
+    # H2
+    url: "jdbc:h2:file:~/testDB"
+    username: "sa"
+    password: ""
+    driver-class-name: "org.h2.Driver"
+
+    # MySQL
+    #url: jdbc:mysql://localhost/test              # Connection String
+    #username: dbuser                              # Database Application account with full permissions
+    #password: dbpass
+    #driver-class-name: com.mysql.jdbc.Driver
+
   h2:
     console:
       enabled: true
       path: "/h2"
 
   jpa:
+    hibernate:
+      ddl-auto: "create"    #none, update, create, create-drop
     show-sql: true       # Logs SQL as its executed by JPA. Set org.hibernate logging level to INFO.
     properties:
       hibernate:
@@ -85,10 +100,15 @@ cryptofeed:
 spring:
   profiles: production   # Overwrite some local config values when hosted live in production environment.
 
+  # Database
   jpa:
     properties:
       hibernate:
         ddl-auto: validate    # Validate schema, do not make changes.
+  h2:
+    console:
+      enabled: true
+      path: "/h2"
 
   management:
     security:

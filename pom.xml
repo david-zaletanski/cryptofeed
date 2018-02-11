@@ -76,6 +76,12 @@
 			<scope>runtime</scope>
 		</dependency>-->
 
+        <!-- Driver -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+        </dependency>
+
 		<!-- External Database -->
 		<!--<dependency>
 			<groupId>mysql</groupId>

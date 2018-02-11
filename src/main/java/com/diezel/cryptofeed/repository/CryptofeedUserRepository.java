@@ -1,6 +1,7 @@
 package com.diezel.cryptofeed.repository;
 
 import com.diezel.cryptofeed.model.CryptofeedUser;
+import com.diezel.cryptofeed.repository.model.CryptofeedUserEntity;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -8,8 +9,8 @@ import org.springframework.data.repository.CrudRepository;
  *
  * @dzale
  */
-public interface CryptofeedUserRepository extends CrudRepository<CryptofeedUser, Long> {
+public interface CryptofeedUserRepository extends CrudRepository<CryptofeedUserEntity, Long> {
 
-
+    CryptofeedUserEntity findOneByUsername(String username);
 
 }

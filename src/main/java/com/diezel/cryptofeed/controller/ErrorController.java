@@ -1,5 +1,7 @@
 package com.diezel.cryptofeed.controller;
 
+import com.diezel.cryptofeed.exceptions.CryptofeedDataException;
+import com.diezel.cryptofeed.exceptions.CryptofeedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -32,6 +34,18 @@ public class ErrorController {
     public ResponseEntity<String> handleException(Exception ex, WebRequest request) {
         log.error("Caught Generic Exception in Error Controller: ", ex);
         return new ResponseEntity<String>("An unexpected error occurred.", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = {CryptofeedException.class})
+    public ResponseEntity<String> handleCryptofeedException(CryptofeedException ex, WebRequest request) {
+        log.error("Caught CryptofeedException: "+ex.getMessage());
+        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = {CryptofeedDataException.class})
+    public ResponseEntity<String> handleCryptofeedException(CryptofeedDataException ex, WebRequest request) {
+        log.error("Caught CryptofeedDataException: "+ex.getMessage());
+        return new ResponseEntity<String>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
 
     /*
