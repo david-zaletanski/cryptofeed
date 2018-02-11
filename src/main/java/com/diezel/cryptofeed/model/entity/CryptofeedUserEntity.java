@@ -31,7 +31,6 @@ public class CryptofeedUserEntity {
     @CollectionTable(
             name = "CF_USR_AUTH",
             joinColumns = @JoinColumn( name = "CF_USER" )
-            //joinColumns = @JoinColumn( name = "CF_USER", referencedColumnName = "CF_USR_ID" )
     )
     @Column( name = "CF_USR_AUTHORITY" )
     private List<String> authorities;
