@@ -60,6 +60,6 @@ public class CryptofeedUser extends DiezelModel {
     private String krakenPublicApiKey;
 
     @NotNull
-    private String krakenPrivateKey;
+    private String krakenPrivateApiKey;
 
 }

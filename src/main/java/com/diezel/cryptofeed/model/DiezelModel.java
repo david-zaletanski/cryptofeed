@@ -1,5 +1,6 @@
 package com.diezel.cryptofeed.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.List;
@@ -19,11 +20,13 @@ public abstract class DiezelModel {
      * mapping to / from domain objects using ModelMapper, otherwise it may get confused between other fields with the
      * characters id in them, in which case a set of custom rules need to be added for each occurrence.
      */
+    @JsonIgnore
     protected Long id;
 
     /**
      * If the model is part of a heirarchy, this object reference points to the model's parent object.
      */
+    @JsonIgnore
     protected Object parent;
 
     public DiezelModel() {

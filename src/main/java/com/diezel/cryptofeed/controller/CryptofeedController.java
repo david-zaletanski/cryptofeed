@@ -21,7 +21,8 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author dzale
  */
-@RestController(value = "/crypto")
+@RestController
+@RequestMapping( value = "/crypto" )
 public class CryptofeedController {
 
     private static final Logger log = LoggerFactory.getLogger(CryptofeedController.class);

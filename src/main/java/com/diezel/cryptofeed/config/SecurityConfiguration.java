@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -30,22 +31,13 @@ import java.util.List;
  * @author dzale
  */
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final int PASSWORD_ENCODER_STRENGTH = 10;
 
     @Autowired
     CryptofeedService cryptofeedService;
-
-
-    /*@Autowired
-    public void configAuthentication(AuthenticationManagerBuilder auth)
-            throws Exception {
-        auth.userDetailsService(userDetailsService())
-                .passwordEncoder(passwordEncoder());
-
-    }*/
 
     @Override
     public void configure(WebSecurity web) throws Exception {
@@ -62,6 +54,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
 
         // TODO: Configure type of security, what endpoints to secure, etc.
+        http.authorizeRequests().anyRequest().permitAll();
     }
 
     @Override
@@ -74,6 +67,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
         authProvider.setPasswordEncoder(passwordEncoder());
+
         return authProvider;
     }
 
@@ -82,11 +76,59 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new UserDetailsService() {
             @Override
             public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+                // Search for test users.
+                // TODO Remove this test user.
+                if (s.toUpperCase().equals("CRYPTOFEED")) {
+                    UserDetails details = new UserDetails() {
+                        @Override
+                        public Collection<? extends GrantedAuthority> getAuthorities() {
+                            List<GrantedAuthority> authorities = new ArrayList<>();
+                            authorities.add(new SimpleGrantedAuthority("USER"));
+                            authorities.add(new SimpleGrantedAuthority("ADMIN"));
+                            return authorities;
+                        }
+
+                        @Override
+                        public String getPassword() {
+                            // BCrypt hash of "admin"
+                            return "$2a$10$Lqry8/.rBMt8fMTOpAGz6O6W8CLN7SMNhf9a3mHiQjmO6jaZExGSa";
+                        }
+
+                        @Override
+                        public String getUsername() {
+                            return "cryptofeed";
+                        }
+
+                        @Override
+                        public boolean isAccountNonExpired() {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean isAccountNonLocked() {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean isCredentialsNonExpired() {
+                            return true;
+                        }
+
+                        @Override
+                        public boolean isEnabled() {
+                            return true;
+                        }
+                    };
+                    return details;
+                }
+
+                // Search database for users.
                 CryptofeedUser user = cryptofeedService.getUserByUsername(s);
                 if (user == null) {
                     throw new UsernameNotFoundException("Cryptouser not found with username: '"+s+"'.");
                 }
 
+                // Convert entity to UserDetails
                 UserDetails details = new UserDetails() {
                     @Override
                     public Collection<? extends GrantedAuthority> getAuthorities() {
