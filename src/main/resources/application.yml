@@ -96,7 +96,10 @@ cryptofeed:
       apiKey: "XYZ"
       apiSecretKey: "XYZ"
     pushbullet:
-      baseUrl: ""
+      baseUrl: "https://api.pushbullet.com"
+      apiVersion: "0"
+      apiKey: "XYZ"
+      apiSecretKey: "XYZ"
 
 
 ---
