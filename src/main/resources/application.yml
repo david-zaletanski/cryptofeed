@@ -37,10 +37,6 @@ spring:
     hibernate:
       ddl-auto: "update"    # none, update, create, create-drop
     show-sql: true       # Logs SQL as its executed by JPA. Set org.hibernate logging level to INFO.
-    #properties:
-      #hibernate:
-        #ddl-auto: create-drop  # Automatically DB on start (options: validate | update | create | create-drop ) validate makes no changes to db.
-        #format_sql: true      # Makes SQL easier to read with show-sql enabled
 
 # Application Endpoint
 server:

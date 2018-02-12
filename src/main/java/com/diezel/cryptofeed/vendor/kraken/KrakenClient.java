@@ -1,8 +1,10 @@
 package com.diezel.cryptofeed.vendor.kraken;
 
 import com.diezel.cryptofeed.vendor.kraken.model.KrakenEndpointNames;
+import com.diezel.cryptofeed.vendor.kraken.model.dto.KrakenAssetInfo;
+import com.diezel.cryptofeed.vendor.kraken.model.dto.KrakenResponse;
 import com.diezel.cryptofeed.vendor.kraken.model.dto.KrakenServerTime;
-import com.diezel.cryptofeed.vendor.kraken.model.error.KrakenErrorResponse;
+import com.diezel.cryptofeed.vendor.kraken.service.KrakenHTTPHeaderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Client for interacting with the Kraken exchange API.
@@ -37,7 +40,7 @@ public class KrakenClient {
     private RestTemplate restTemplate;
 
     @Autowired
-    KrakenHTTPHeader httpHeaderGenerator;
+    KrakenHTTPHeaderService httpHeaderGenerator;
 
     @Autowired
     ObjectMapper objectMapper;
@@ -50,26 +53,21 @@ public class KrakenClient {
 
         // Make Request
         String endpoint = getFullEndpointName(KrakenEndpointNames.SERVER_UNIXTIME);
-        ResponseEntity<String> response =
-                restTemplate.getForEntity(endpoint, String.class);
-        String body = response.getBody();
+        ResponseEntity<KrakenResponse> response =
+                restTemplate.getForEntity(endpoint, KrakenResponse.class);
+        KrakenResponse body = response.getBody();
 
         // Check Response For Error
         if (response.getStatusCode() != HttpStatus.OK) {
             // Error
-            try {
-                KrakenErrorResponse errorResponse = objectMapper.readValue(body, KrakenErrorResponse.class);
-                handleKrakenErrorResponse(errorResponse);
-                return 0;
-            } catch (IOException ex) {
-                log.error("Error converting API response body to KrakenErrorResponse. ", ex.getMessage());
-            }
+            handleKrakenErrorResponse(response.getBody().getError());
+            return 0;
         }
 
         // Otherwise Parse Response
         KrakenServerTime serverTime = null;
         try {
-            serverTime = objectMapper.readValue(body, KrakenServerTime.class);
+            serverTime = objectMapper.readValue((String)body.getResult(), KrakenServerTime.class);
         } catch (IOException ex) {
             log.error("Error reading GetServerTime response from API.", ex);
         }
@@ -77,15 +75,40 @@ public class KrakenClient {
         return serverTime == null ? 0 : serverTime.getUnixtime();
     }
 
+    public KrakenAssetInfo[] getAssetInfo() {
+
+        // Make Request
+        String endpoint = getFullEndpointName(KrakenEndpointNames.ASSET_INFO);
+        ResponseEntity<KrakenResponse> response =
+                restTemplate.getForEntity(endpoint, KrakenResponse.class);
+        KrakenResponse body = response.getBody();
+
+        // Check Response For Error
+        if (response.getStatusCode() != HttpStatus.OK) {
+            // Error
+            handleKrakenErrorResponse(response.getBody().getError());
+            return null;
+        }
+
+        // Otherwise Parse Response
+        KrakenAssetInfo[] assetInfo = null;
+        try {
+            assetInfo = objectMapper.readValue((String)body.getResult(), KrakenAssetInfo[].class);
+        } catch (IOException ex) {
+            log.error("Error reading GetServerTime response from API.", ex);
+        }
+
+        return assetInfo;
+    }
+
     private String getFullEndpointName(KrakenEndpointNames name) {
         return baseUrl + name.toString();
     }
 
-    private void handleKrakenErrorResponse(KrakenErrorResponse errorResponse) {
-        log.info("Kraken Result: "+errorResponse.getResult());
+    private void handleKrakenErrorResponse(List<String> errors) {
         log.info("Kraken Errors:");
         int n = 1;
-        for (String message : errorResponse.getError()) {
+        for (String message : errors) {
             log.info("Error (#"+n+"): "+message);
             n++;
         }

@@ -1,4 +1,4 @@
-package com.diezel.cryptofeed.vendor.kraken.model.error;
+package com.diezel.cryptofeed.vendor.kraken.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,10 +14,10 @@ import java.util.List;
 @Data
 @Builder
 @AllArgsConstructor
-public class KrakenErrorResponse {
+public class KrakenResponse {
 
     private List<String> error;
 
-    private String result;
+    private Object result;
 
 }
